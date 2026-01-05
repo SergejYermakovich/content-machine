@@ -11,11 +11,11 @@ services:
       - "5679:5679"  # Webhook для Telegram (опционально)
     environment:
       # Основные настройки
-      - N8N_PROTOCOL=http
+      - N8N_PROTOCOL=https
       - N8N_HOST=localhost
       - N8N_PORT=5678
       - N8N_EDITOR_BASE_URL=http://localhost:5678/
-      - WEBHOOK_URL=http://n8n:5678/
+      - WEBHOOK_URL=${NGROK_URL}/
 
       # База данных
       - DB_TYPE=postgresdb
@@ -32,8 +32,8 @@ services:
       - N8N_BASIC_AUTH_USER=${ADMIN_USER}
       - N8N_BASIC_AUTH_PASSWORD=${ADMIN_PASSWORD}
 
-      # Для работы с внешними сервисами
-      - EXTERNAL_FRONTEND_HOOKS_URLS=http://localhost:5678
+      # Для работы с внешними сервисами (используем ngrok для webhook)
+      - EXTERNAL_FRONTEND_HOOKS_URLS=${NGROK_URL}
       - N8N_PERSONALIZATION_ENABLED=false
     volumes:
       - n8n_data:/home/node/.n8n
